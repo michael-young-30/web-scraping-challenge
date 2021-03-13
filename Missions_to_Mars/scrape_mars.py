@@ -6,7 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 def scrape_all():
     executable_path = { "executable_path": ChromeDriverManager().install()}
-    browser = Browser("chrome", **executable_path, headless=False)
+    browser = Browser('chrome', **executable_path, headless=True)
     news_title, news_paragraph = mars_news(browser)
     data ={
         "news_title":news_title,
@@ -22,7 +22,7 @@ def mars_news(browser):
     url="https://mars.nasa.gov/news/?page=0&per_page=40&order=publish_date+desc%2Ccreated_at+desc&search=&category=19%2C165%2C184%2C204&blank_scope=Latest"
     browser.visit(url)
     html=browser.html
-    new_soup=bs(html, 'html.parser')
+    new_soup=soup(html, 'html.parser')
     try:
         news_paragraph=new_soup.find_all("div",class_="rollover_description_inner")[0].text.strip()
         news_title=new_soup.find_all('div', class_="content_title")[0].text.strip()
@@ -35,7 +35,7 @@ def feature_image(browser):
     url_1='https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/index.html'
     browser.visit(url_1)
     html=browser.html
-    new_soup=bs(html, 'html.parser')
+    new_soup=soup(html, 'html.parser')
     try:
         full_image_element=new_soup.find("a", class_="showimg fancybox-thumbs")
     except:
